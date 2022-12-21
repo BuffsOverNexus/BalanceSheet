@@ -1,6 +1,6 @@
 package com.buffsovernexus.balancesheet.controller;
 
-import com.buffsovernexus.balancesheet.entity.request.AccountRequest;
+import com.buffsovernexus.balancesheet.entity.request.CreateAccountRequest;
 import com.buffsovernexus.balancesheet.entity.response.AccountResponse;
 import com.buffsovernexus.balancesheet.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,8 @@ public class AccountController {
     }
 
     @PostMapping("/account/create")
-    public ResponseEntity<AccountResponse> createAccount(@RequestBody AccountRequest accountRequest) {
-        return accountService.createAccount(accountRequest);
+    public ResponseEntity<AccountResponse> createAccount(@RequestBody CreateAccountRequest createAccountRequest) {
+        return accountService.createAccount(createAccountRequest);
     }
 
 }
