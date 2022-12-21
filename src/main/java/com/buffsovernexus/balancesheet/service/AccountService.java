@@ -1,17 +1,15 @@
 package com.buffsovernexus.balancesheet.service;
 
 import com.buffsovernexus.balancesheet.entity.AccountEntity;
-import com.buffsovernexus.balancesheet.entity.request.AccountRequest;
+import com.buffsovernexus.balancesheet.entity.request.CreateAccountRequest;
 import com.buffsovernexus.balancesheet.entity.response.AccountResponse;
 import com.buffsovernexus.balancesheet.repository.AccountRepository;
 import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.Optional;
 
 @Service
@@ -36,17 +34,17 @@ public class AccountService {
     }
 
 
-    public ResponseEntity<AccountResponse> createAccount(AccountRequest accountRequest) {
+    public ResponseEntity<AccountResponse> createAccount(CreateAccountRequest createAccountRequest) {
         // Determine if entity exists
         try {
-            String hashedPassword = hashString(accountRequest.getPassword());
+            String hashedPassword = hashString(createAccountRequest.getPassword());
             Optional<AccountEntity> existingAccount = accountRepository
-                    .findAccountByUsernameAndPasswordOrEmail(accountRequest.getUsername(), hashedPassword, accountRequest.getEmail());
+                    .findAccountByUsernameAndPasswordOrEmail(createAccountRequest.getUsername(), hashedPassword, createAccountRequest.getEmail());
             if (existingAccount.isEmpty()) {
                 AccountEntity account = new AccountEntity();
-                account.setUsername(accountRequest.getUsername());
+                account.setUsername(createAccountRequest.getUsername());
                 account.setPassword(hashedPassword);
-                account.setEmail(accountRequest.getEmail());
+                account.setEmail(createAccountRequest.getEmail());
                 accountRepository.save(account);
                 AccountResponse response = AccountResponse.builder().username(account.getUsername()).uuid(account.getUuid()).email(account.getEmail()).build();
                 return ResponseEntity.ok(response);
