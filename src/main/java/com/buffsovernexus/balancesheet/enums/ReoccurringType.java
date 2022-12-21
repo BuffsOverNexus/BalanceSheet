@@ -5,5 +5,6 @@ public enum ReoccurringType {
     MONTHLY,
     BI_WEEKLY,
     WEEKLY,
-    DAILY
+    DAILY,
+    ANNUALLY
 }
