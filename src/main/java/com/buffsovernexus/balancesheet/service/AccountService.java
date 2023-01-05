@@ -25,7 +25,7 @@ public class AccountService {
     private JwtService jwtService;
 
     public ResponseEntity<AccountResponse> getAccountByUsername(String username) {
-        Optional<AccountEntity> account = accountRepository.findAccountByUsername(username);
+        Optional<AccountEntity> account = accountRepository.findAccountByUsername(username.toLowerCase());
         if (account.isPresent()) {
             AccountEntity accountEntity = account.get();
             AccountResponse response = AccountResponse.builder()
