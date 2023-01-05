@@ -28,20 +28,25 @@ public class IncomeService {
     public ResponseEntity<IncomeEntity> createIncomeItem(CreateIncomeRequest createIncomeRequest) {
         try {
             AccountEntity accountEntity = accountRepository.getReferenceById(createIncomeRequest.getAccount());
-            // Create income object
-            IncomeEntity incomeEntity = new IncomeEntity();
-            incomeEntity.setAmount(createIncomeRequest.getAmount());
-            incomeEntity.setDescription(createIncomeRequest.getDescription());
-            incomeEntity.setLabel(createIncomeRequest.getLabel());
-            incomeEntity.setReoccurringType(createIncomeRequest.getReoccurringType());
-            incomeRepository.save(incomeEntity);
-            if (Objects.isNull(accountEntity.getIncome())) {
-                accountEntity.setIncome(Collections.singletonList(incomeEntity));
-            } else {
-                accountEntity.getIncome().add(incomeEntity);
+
+            if ( Objects.isNull(accountEntity) )
+                return ResponseEntity.badRequest().build();
+            else {
+                // Create income object
+                IncomeEntity incomeEntity = new IncomeEntity();
+                incomeEntity.setAmount(createIncomeRequest.getAmount());
+                incomeEntity.setDescription(createIncomeRequest.getDescription());
+                incomeEntity.setLabel(createIncomeRequest.getLabel());
+                incomeEntity.setReoccurringType(createIncomeRequest.getReoccurringType());
+                incomeRepository.save(incomeEntity);
+                if (Objects.isNull(accountEntity.getIncome())) {
+                    accountEntity.setIncome(Collections.singletonList(incomeEntity));
+                } else {
+                    accountEntity.getIncome().add(incomeEntity);
+                }
+                accountRepository.save(accountEntity);
+                return ResponseEntity.ok(incomeEntity);
             }
-            accountRepository.save(accountEntity);
-            return ResponseEntity.ok(incomeEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.internalServerError().build();
