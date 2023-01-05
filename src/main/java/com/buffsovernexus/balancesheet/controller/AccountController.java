@@ -6,6 +6,7 @@ import com.buffsovernexus.balancesheet.entity.response.AccountResponse;
 import com.buffsovernexus.balancesheet.entity.response.AuthenticationResponse;
 import com.buffsovernexus.balancesheet.service.AccountService;
 import com.buffsovernexus.balancesheet.service.AuthenticationService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -17,11 +18,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/account")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AccountController {
-    @Autowired
     private AccountService accountService;
-    @Autowired
     private AuthenticationService authenticationService;
 
     @GetMapping("/username")
@@ -32,18 +31,6 @@ public class AccountController {
     @GetMapping("/home") //does same thing as /username route
     public ResponseEntity<AccountResponse> getAccount(Principal principal){
         return accountService.getAccountByUsername(principal.getName());
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<AuthenticationResponse> createAccount(@RequestBody CreateAccountRequest createAccountRequest) {
-        return accountService.createAccount(createAccountRequest);
-    }
-
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
-    ){
-        return ResponseEntity.ok(authenticationService.authenticate(request).getBody());
     }
 
 }

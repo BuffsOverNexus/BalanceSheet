@@ -13,7 +13,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/testbs")
-public class authTestController {
+public class AuthTestController {
 
     @Autowired
     private AccountService accountService;
