@@ -1,6 +1,6 @@
 package com.buffsovernexus.balancesheet.enums;
 
-public enum ExpenseType {
+public enum ExpenseCategory {
     RESTAURANTS_ENTERTAINMENT,
     MEDICAL,
     GAS_GROCERY,
