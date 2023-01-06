@@ -2,7 +2,9 @@ package com.buffsovernexus.balancesheet.service;
 
 import com.buffsovernexus.balancesheet.entity.AccountEntity;
 import com.buffsovernexus.balancesheet.entity.ExpenseEntity;
+import com.buffsovernexus.balancesheet.entity.request.CreateAccountRequest;
 import com.buffsovernexus.balancesheet.entity.request.CreateExpenseRequest;
+import com.buffsovernexus.balancesheet.enums.ExpenseCategory;
 import com.buffsovernexus.balancesheet.repository.AccountRepository;
 import com.buffsovernexus.balancesheet.repository.ExpenseRepository;
 import lombok.AllArgsConstructor;
@@ -54,9 +56,8 @@ public class ExpenseService {
         try {
             //Make sure not some crazy length thats gonna make inconsistent rendering
             //on the front end
-            boolean validRequest = (request.getLabel().length() < validLabelLength
-                    && request.getDescription().length() < validDescriptionLength);
-            if (!validRequest) return ResponseEntity.badRequest().build();
+            if (!isValidCreateExpenseRequest(request))
+                return ResponseEntity.badRequest().build();
 
             AccountEntity user = accountService.getAccountEntityByUsername(username);
             ExpenseEntity newExpense = ExpenseEntity.builder()
@@ -86,5 +87,13 @@ public class ExpenseService {
             return null;
         }
         return myExpense;
+    }
+
+    public boolean isValidCreateExpenseRequest(CreateExpenseRequest request){
+        boolean lengthCheck = (request.getLabel().length() < validLabelLength
+                && request.getDescription().length() < validDescriptionLength);
+        boolean amountCheck = (request.getAmount() != null && request.getAmount() > 0);
+
+        return lengthCheck && amountCheck;
     }
 }
