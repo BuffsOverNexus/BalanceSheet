@@ -51,4 +51,36 @@ public class IncomeService {
         }
     }
 
+    public ResponseEntity<Boolean> deleteItemsByLabel(String accountName, String label) {
+        try {
+            AccountEntity account = accountService.getAccountEntityByUsername(accountName);
+
+            // Delete all items with the label matching
+            account.getIncome().stream()
+                    .filter(income -> income.getLabel().equalsIgnoreCase(label))
+                    .forEach(income -> account.getIncome().remove(income));
+
+            accountRepository.save(account);
+            return ResponseEntity.ok(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.internalServerError().body(false);
+        }
+    }
+
+    public ResponseEntity<Boolean> deleteItemByUUID(String accountName, UUID uuid) {
+        try {
+            AccountEntity account = accountService.getAccountEntityByUsername(accountName);
+            IncomeEntity income = account.getIncome().stream().filter(incomeEntity -> incomeEntity.getUuid().equals(uuid)).findFirst().orElseThrow();
+            account.getIncome().remove(income);
+            accountRepository.save(account);
+
+
+            return ResponseEntity.ok(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.internalServerError().body(false);
+        }
+    }
+
 }
