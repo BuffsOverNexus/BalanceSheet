@@ -2,6 +2,7 @@ package com.buffsovernexus.balancesheet.entity;
 
 import com.buffsovernexus.balancesheet.enums.ReoccurringType;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 

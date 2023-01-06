@@ -6,10 +6,9 @@ import com.buffsovernexus.balancesheet.entity.request.CreateIncomeRequest;
 import com.buffsovernexus.balancesheet.repository.AccountRepository;
 import com.buffsovernexus.balancesheet.repository.IncomeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.security.Principal;
 import java.util.*;
 
 @Service
@@ -36,12 +35,9 @@ public class IncomeService {
             else {
                 // Create income object
                 IncomeEntity incomeEntity = new IncomeEntity();
-                incomeEntity.setAmount(createIncomeRequest.getAmount());
-                incomeEntity.setDescription(createIncomeRequest.getDescription());
-                incomeEntity.setLabel(createIncomeRequest.getLabel());
-                incomeEntity.setReoccurringType(createIncomeRequest.getReoccurringType());
+                BeanUtils.copyProperties(createIncomeRequest, incomeEntity);
                 incomeRepository.save(incomeEntity);
-                if (Objects.isNull(accountEntity.getIncome())) {
+                if ( Objects.isNull(accountEntity.getIncome()) ) {
                     accountEntity.setIncome(Collections.singletonList(incomeEntity));
                 } else {
                     accountEntity.getIncome().add(incomeEntity);
