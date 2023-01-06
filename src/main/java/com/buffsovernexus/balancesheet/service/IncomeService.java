@@ -71,11 +71,10 @@ public class IncomeService {
     public ResponseEntity<Boolean> deleteItemByUUID(String accountName, UUID uuid) {
         try {
             AccountEntity account = accountService.getAccountEntityByUsername(accountName);
-            IncomeEntity income = account.getIncome().stream().filter(incomeEntity -> incomeEntity.getUuid().equals(uuid)).findFirst().orElseThrow();
-            account.getIncome().remove(income);
+            account.getIncome().stream()
+                    .filter(incomeEntity -> incomeEntity.getUuid().equals(uuid))
+                    .forEach(incomeEntity -> account.getIncome().remove(incomeEntity));
             accountRepository.save(account);
-
-
             return ResponseEntity.ok(true);
         } catch (Exception ex) {
             ex.printStackTrace();
