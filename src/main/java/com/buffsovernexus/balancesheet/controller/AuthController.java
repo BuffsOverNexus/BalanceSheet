@@ -20,15 +20,8 @@ public class AuthController {
     private AccountService accountService;
     private AuthenticationService authenticationService;
 
-    @PostMapping("/create")
-    public ResponseEntity<AuthenticationResponse> createAccount(@RequestBody CreateAccountRequest createAccountRequest) {
-        return accountService.createAccount(createAccountRequest);
-    }
-
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
-    ){
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(authenticationService.authenticate(request).getBody());
     }
 }
