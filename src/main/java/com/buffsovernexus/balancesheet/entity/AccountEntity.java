@@ -1,5 +1,6 @@
 package com.buffsovernexus.balancesheet.entity;
 
+import com.buffsovernexus.balancesheet.repository.ExpenseRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,9 @@ public class AccountEntity implements UserDetails {
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<IncomeEntity> income;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<ExpenseEntity> expenses;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
