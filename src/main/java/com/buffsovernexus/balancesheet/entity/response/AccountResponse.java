@@ -1,5 +1,6 @@
 package com.buffsovernexus.balancesheet.entity.response;
 
+import com.buffsovernexus.balancesheet.entity.ExpenseEntity;
 import com.buffsovernexus.balancesheet.entity.IncomeEntity;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,6 @@ public class AccountResponse {
     private UUID uuid;
     private String username, email;
     private List<IncomeEntity> income;
+    private List<ExpenseEntity> expenses;
 
 }
